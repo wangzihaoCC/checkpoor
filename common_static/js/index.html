@@ -1,0 +1,135 @@
+<!doctype html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8">
+
+<title>常规表单验证</title>
+
+<script src="js/jquery.js"></script>
+
+<script src="js/Verify.js"></script>
+
+<script>
+
+function Validation(){
+
+	var Verify_value= $('input').Verify({'type':$('select').val()});
+
+	alert('返回值:'+Verify_value+'，选择验证类型：'+$('select').val())
+
+	if(Verify_value){
+
+		alert('验证通过');
+
+	}else if(!Verify_value){
+
+		alert('验证不通过');
+
+	}else{
+
+		alert('方法错误，请检测是否缺少参数');
+
+	}
+
+}; 
+
+</script>
+<script type="text/javascript">
+
+function formcheck(){
+	var starttime = $('#dtp_input2').val();
+	var endtime = $('#dtp_input3').val();
+	if(starttime && endtime){
+		
+		return true;
+	}
+	alert('need time');
+	return false;	
+}
+</script>
+
+
+</head>
+
+
+
+<body>
+
+<form method="get" onsubmit="formcheck()">
+	<input type="hidden" id="dtp_input2" value="" name="starttime"/>
+	<input type="hidden" id="dtp_input3" value="2" name="endtime"/>
+	<input type="submit" value="submit">
+</form>
+
+
+请填写验证内容：<input type="text"/>
+
+请选择验证类型：<select name="">
+
+              <option value="name">姓名</option>
+
+              <option value="Password">密码</option>
+
+              <option value="Mobile">手机号</option>
+
+              <option value="phone">固定电话</option>
+
+              <option value="ID_number">身份证号</option>
+
+              <option value="Email">邮箱</option>
+
+              <option value="Postcode">邮编</option>
+
+              <option value="Chinese">中文</option>
+
+            </select>
+
+            <button type="button" onClick="Validation()">提交</button>
+
+			
+
+<br/><br/>
+
+<pre>
+
+调用说明：<br/>
+
+JS调用：<br/>
+
+$('#Verify').Verify();<br/>
+
+
+
+html:<br/>
+
+&lt;input type="text" id="Verify"/&gt <br/>
+
+
+
+参数说明：<br/>
+
+obj：检测值，默认当前对象的value值<br/>
+
+type：检测对象类型<br/>
+
+n:检测方法标识<br/>
+
+optins：自定义检测方法<br/>
+
+Repeat:是否检测重复性（默认为false）<br/>
+
+m：重复性检测位数（默认为0）<br/>
+
+方法成功后返回为true或者false，失败返回null<br/>
+
+为防止转义符“\”，把原来的“\”改为“\\”<br/>
+
+</pre>
+
+</body>
+
+</html>
+

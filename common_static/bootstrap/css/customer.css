@@ -1,0 +1,5 @@
+.mainheader{ background-color: #2f4050; color: white;}
+.mainheader > h3 { padding-left: 20px;}
+.fieldlist {color:blue;}
+.fieldlist span{color:#000;}
+.poorlist > h1 > a { font-size: 12px;}
