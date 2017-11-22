@@ -23,7 +23,7 @@ def readdb(sql):
 
 
 def createview(sql):
-	conn = pymysql.Connect("localhost","jeffrey","123456Xx!","TESTDB")
+	conn = pymysql.Connect(host="localhost",port=3306,user="jeffrey",passwd="123456Xx!",db="TESTDB",charset="utf8")
 	cursor = conn.cursor()
 	try:
 		sat = cursor.execute(sql)
@@ -33,6 +33,7 @@ def createview(sql):
 		print("sql error")
 	finally:
 	    conn.close();
+
 
 
 

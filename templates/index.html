@@ -21,15 +21,25 @@
 
 {% include 'header.html' %}
 
-
+{{ chart2 }}
 <div class="container">
 	<div class="row-fluid">
 		
 		<div class="col-lg-8">
 			<h3>消费情况概览</h3>
+			{% if amountlength > 0 %}
 			<div id="main" style="width: 100%;height:400px;"></div>
 			<div id="main2" style="width: 100%;height:400px;" style="margin-top:50px;"></div>
-
+			{% else%}
+			<div style="width: 100%;height:400px;"><p>暂无数据</p></div>
+			{% endif%}
+			<form>
+				<select style="margin-left:45%; margin-bottom:20px;">
+					<option>24小时</option>
+					<option>7天</option>
+					<option>30天</option>
+				</select>
+			</form>
 			
 		</div>
 		<div class="col-lg-4" style="border-left:1px solid #ddd; padding-left:20px;">
@@ -168,21 +178,21 @@
 <!-- select sum(amount) from messorder where date(ordertime) = '2017-10-19' group by userid;
  -->	
 
+
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
 
         // 指定图表的配置项和数据
         var data = dataTool.prepareBoxplotData([
-	{{ amount }}	    
-    //[0,10,10,20,25,40,50,30,100,40,100,40,100,100,100,20,50,200],
+	{{ amount|safe }}	    
    
 		]);
 
 		option = {
 		    title: [
 		        {
-		            text: '日消费抽样 人/天',
+		            text: '日消费统计',
 		            left: 'center',
 		        },
 		        
@@ -229,17 +239,17 @@
 		                formatter: function (param) {
 		                    return [
 		                        'Experiment ' + param.name + ': ',
-		                        'upper: ' + param.data[4],
+		                        '上限: ' + param.data[4],
 		                        'Q3: ' + param.data[3],
-		                        'median: ' + param.data[2],
+		                        '中位值: ' + param.data[2],
 		                        'Q1: ' + param.data[1],
-		                        'lower: ' + param.data[0]
+		                        '下限: ' + param.data[0]
 		                    ].join('<br/>')
 		                }
 		            }
 		        },
 		        {
-		            name: 'outlier',
+		            name: '离群样本',
 		            type: 'scatter',
 		            data: data.outliers
 		        }

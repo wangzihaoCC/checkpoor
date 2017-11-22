@@ -4,23 +4,48 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.shortcuts import render
 from . import getlist,process
+import json
 
+#用在首页中查消费那个chart
+t = "limit 100"
+sqlAmount = '''select amount from messorder %s;''' %(t)
+sqlday = '''select date_format(ordertime,'%Y-%m-%d %H') as dt,count(orderid) as cid from messorder where ordertime >= date_sub(now(), INTERVAL 1 DAY) AND ordertime <= now() group by dt;'''
+sqlweek = '''select date_format(ordertime,'%Y-%m-%d') as dt,count(orderid) as cid from messorder where ordertime >= date_sub(now(), INTERVAL 7 DAY) AND ordertime <= now()  group by dt;'''
+sqlmonth = '''select date_format(ordertime,'%Y-%m-%d') as dt,count(orderid) as cid from messorder where ordertime >= date_sub(now(), INTERVAL 90 DAY) AND ordertime <= now()  group by dt;'''
 
+def Getchart2(sql):
+	chart2Data = list(getlist.readdb(sqlmonth))
+	TimeList =[]
+	DateList = []
+	for i in chart2Data:
+		TimeList.append(i[0])
+		DateList.append(i[1])
+		
+	Getchart2Data = [TimeList,DateList]
+	return Getchart2Data
 
 def index(request):
 	request.encoding='utf-8'
+	chartData = list(getlist.readdb(sqlAmount))
+	AmountList =[]
+	for (i,) in chartData:
+		AmountList.append(i)
 	context = {}
-	context['aa'] = 'this is aa!'
-	context['bb'] = 'this is bb!'
-	context['amount'] = [17,18,24,22,7,20,23,17,16,15,29]
-	context['calendar'] = str(["2017-10-10","2017-10-11","2017-10-12","2017-10-13"]).encode("utf-8")
-	context['data']= [17,18,24,22]
+	context['amount'] = AmountList
+	context['amountlength'] = len(AmountList)
+
+	Getchart2Data = Getchart2(sqlmonth)
+
+	
+	context['calendar'] = str(Getchart2Data[0]).encode("utf-8")
+	context['data']= Getchart2Data[1]
 	return render(request, 'index.html', context)
 
 
 
 
 sql1 = '''select stuid,stuname,local,ordertime,avgorder,std,avgmark from maintable;'''
+
 
 
 
